@@ -1,24 +1,43 @@
 radio.onReceivedString(function (receivedString) {
-    if (receivedString == "STOP") {
-        Kitronik_Move_Motor.stop()
+    if (receivedString == "A") {
+    	
+    } else if (receivedString == "B") {
+    	
+    } else if (receivedString == "C") {
+        moveMotorZIP.setColor(Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.Green))
+        moveMotorZIP.show()
+    } else if (receivedString == "D") {
+        moveMotorZIP.setColor(Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.Yellow))
+        moveMotorZIP.show()
+    } else if (receivedString == "E") {
+        moveMotorZIP.setColor(Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.Red))
+        moveMotorZIP.show()
+    } else if (receivedString == "F") {
+        moveMotorZIP.setColor(Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.Blue))
+        moveMotorZIP.show()
     } else {
     	
     }
 })
 radio.onReceivedValue(function (name, value) {
-    if (name == "HAUT") {
-        Kitronik_Move_Motor.move(Kitronik_Move_Motor.DriveDirections.Forward, Math.map(value, 550, 1023, 10, 100))
-    } else if (name == "BAS") {
-        Kitronik_Move_Motor.move(Kitronik_Move_Motor.DriveDirections.Reverse, Math.map(value, 1, 450, 10, 100))
-    } else if (name == "GAUCHE") {
-        Kitronik_Move_Motor.spin(Kitronik_Move_Motor.SpinDirections.Left, Math.map(value, 1, 450, 10, 100))
-    } else if (name == "DROITE") {
-        Kitronik_Move_Motor.spin(Kitronik_Move_Motor.SpinDirections.Right, Math.map(value, 550, 1023, 10, 100))
-    } else {
-    	
+    if (name == "MA") {
+        if (value > 0) {
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorLeft, Kitronik_Move_Motor.MotorDirection.Forward, value)
+        } else if (value < 0) {
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorLeft, Kitronik_Move_Motor.MotorDirection.Reverse, Math.abs(value))
+        } else {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorLeft)
+        }
+    } else if (name == "MB") {
+        if (value > 0) {
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorRight, Kitronik_Move_Motor.MotorDirection.Forward, value)
+        } else if (value < 0) {
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorRight, Kitronik_Move_Motor.MotorDirection.Reverse, Math.abs(value))
+        } else {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorRight)
+        }
     }
 })
+let moveMotorZIP: Kitronik_Move_Motor.MoveMotorZIP = null
 radio.setGroup(1)
-basic.forever(function () {
-	
-})
+moveMotorZIP = Kitronik_Move_Motor.createMoveMotorZIPLED(4)
